@@ -1,56 +1,48 @@
-from random import *
+from random import randint
 
-des_lances = []
 des_gardes = []
 
 def lancer_des():
-    global des_lances
-    for i in range(5): # Lancer 5 dés
+    des_lances = []
+    for i in range(5 - len(des_gardes)):
         des_lances.append(randint(1, 6))
-        print("Valeur du dé " + str(i + 1) + " : ", des_lances[i])
+        print("Valeur du dé " + str(i + 1) + ": ", des_lances[i])
+    return des_lances
 
-def choisir_des(n):
-    global des_gardes, des_lances
+def choisir_des(n, des_lances):
+    global des_gardes
+    remove_indices = []
 
     if n == 2 : # Prendre automatiquement les dés restants
         for i in range(len(des_lances)) :
             des_gardes.append(des_lances[i])
     else : # Chosir les dés souhaités
-        for i in range(5):
-            x = input()
+        value = -1
+        while value != 0:
             try:
-                x = int(x)
-                if x == 0:
+                value = int(input("Taper un chiffre : "))
+                if value == 0:
                     break
-                elif x > 5 or x < 0:
+                elif value > len(des_lances) or value < 0:
                     print("Erreur : Ce dé n'existe pas")
+                elif (value - 1) in remove_indices:
+                    print("Erreur : Ce dé est déjà sélectionné")
                 else:
-                    des_gardes.append(des_lances[x - 1])
-            except:
-                print("Erreur : Ce n'est pas un chiffre")
-    print('\033[34m' + "Les dés du joueur sont :", des_gardes, "\n")
-    print('\033[0m')
-
-def nouveau_lancer():
-    global des_lances, des_gardes
-    des_lances = []
-
-    for i in range(5 - len(des_gardes)):
-        des_lances.append(randint(1, 6))
-        print("Valeur du dé " + str(i + 1) + " :", des_lances[i])
+                    remove_indices.append(value - 1)
+            except ValueError:
+                print("Erreur : ce n'est pas un chiffre'.")
+        for i in range(len(des_lances)):
+            if i not in remove_indices:
+                des_gardes.append(des_lances[i])
+        #des_gardes.append([i for j, i in enumerate(des_lances) if j not in remove_indices])
+    print("Les dés du joueur sont :", des_gardes, "\n")
 
 # Main
-print('\033[32m' + "\n----------[Yams]----------\n")
-print('\033[0m') 
+print("----------[Yams]----------\n")
 
 for n in range(3):
-    print('\033[33m' + "Choisir le/les dé(s) à garder.")
-    print("(Taper 0 lorsque la sélection est terminée)")
-    print('\033[0m')
-    if n == 0:
-        lancer_des()
-        print("\n")
-    else:
-        nouveau_lancer()
-        print("\n")
-    choisir_des(n)
+    print("Choisir le/les dé(s) à relancer.")
+    print("(Taper 0 lorsque la sélection est terminée)\n")
+    des_lances = lancer_des()
+    print("\n")
+    choisir_des(n, des_lances)
