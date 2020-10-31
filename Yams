@@ -84,10 +84,10 @@ print("\n----------[Yams]----------")
 total = 0
 l = ['Maximum de 1', 'Maximum de 2', 'Maximum de 3', 'Maximum de 4', 'Maximum de 5', 'Maximum de 6']
 for i in range(6):
-    print("\nLancer " + str(i + 1))
+    print("\nLancer " + str(i + 1) + "\n")
     for n in range(3):
         print("Choisir le/les dé(s) à garder.")
-        print("(Taper 0 lorsque la sélection est terminée)")
+        print("(Taper 0 lorsque la sélection est terminée)\n")
         des_lances = lancer_des()
         print("\n")
         choisir_des(n, des_lances)
