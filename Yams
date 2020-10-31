@@ -6,7 +6,7 @@ def lancer_des():
     des_lances = []
     for i in range(5 - len(des_gardes)):
         des_lances.append(randint(1, 6))
-        print("Valeur du dé " + str(i + 1) + ": ", des_lances[i])
+        print("Valeur du dé " + str(i + 1) + " : ", des_lances[i])
     return des_lances
 
 def choisir_des(n, des_lances):
@@ -30,19 +30,67 @@ def choisir_des(n, des_lances):
                 else:
                     remove_indices.append(value - 1)
             except ValueError:
-                print("Erreur : ce n'est pas un chiffre'.")
+                print("Erreur : Ce n'est pas un chiffre'.")
+        #des_gardes.append([i for j, i in enumerate(des_lances) if j not in remove_indices])
         for i in range(len(des_lances)):
             if i not in remove_indices:
                 des_gardes.append(des_lances[i])
-        #des_gardes.append([i for j, i in enumerate(des_lances) if j not in remove_indices])
-    print("Les dés du joueur sont :", des_gardes, "\n")
+    print("Les dés gardés du joueur sont :", des_gardes, "\n")
 
+def score_final():
+    global des_gardes, score, l
+    
+    while 1:
+        print("Combinaisons possibles :")
+        for i in sorted(l):
+            print(i)
+        try:
+            resultat = int(input("\nTaper un chiffre : "))
+            if resultat == 1:
+                l.remove('Maximum de 1')
+                score = des_gardes.count(1)
+                break
+            elif resultat == 2:
+                l.remove('Maximum de 2')
+                score = des_gardes.count(2) * 2
+                break
+            elif resultat == 3:
+                l.remove('Maximum de 3')
+                score = des_gardes.count(3) * 3
+                break
+            elif resultat == 4:
+                l.remove('Maximum de 4') 
+                score = des_gardes.count(4) * 4
+                break
+            elif resultat == 5:
+                l.remove('Maximum de 5')
+                score = des_gardes.count(5) * 5
+                break
+            elif resultat == 6:
+                l.remove('Maximum de 6')
+                score = des_gardes.count(6) * 6
+                break
+        except ValueError:
+            print("Erreur : Cette combinaison n'existe pas")
+
+    print("Résultat dans le Maximum de " + str(resultat) + " et marque " + str(score) + " points.")
+    del des_gardes[:]
+    
 # Main
-print("----------[Yams]----------\n")
+global score, l
 
-for n in range(3):
-    print("Choisir le/les dé(s) à relancer.")
-    print("(Taper 0 lorsque la sélection est terminée)\n")
-    des_lances = lancer_des()
-    print("\n")
-    choisir_des(n, des_lances)
+print("\n----------[Yams]----------")
+
+total = 0
+l = ['Maximum de 1', 'Maximum de 2', 'Maximum de 3', 'Maximum de 4', 'Maximum de 5', 'Maximum de 6']
+for i in range(6):
+    print("\nLancer " + str(i + 1))
+    for n in range(3):
+        print("Choisir le/les dé(s) à garder.")
+        print("(Taper 0 lorsque la sélection est terminée)")
+        des_lances = lancer_des()
+        print("\n")
+        choisir_des(n, des_lances)
+    score_final()
+    total = total + score
+print("\nLe score total est", total)
