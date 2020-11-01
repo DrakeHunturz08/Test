@@ -10,7 +10,6 @@ def lancer_des():
     return des_lances
 
 def choisir_des(n, des_lances):
-    global des_gardes
     remove_indices = []
 
     if n == 2 : # Prendre automatiquement les dés restants
@@ -77,7 +76,6 @@ def score_final():
     del des_gardes[:]
     
 # Main
-global score, l
 
 print("\n----------[Yams]----------")
 
@@ -86,7 +84,7 @@ l = ['Maximum de 1', 'Maximum de 2', 'Maximum de 3', 'Maximum de 4', 'Maximum de
 for i in range(6):
     print("\nLancer " + str(i + 1) + "\n")
     for n in range(3):
-        print("Choisir le/les dé(s) à garder.")
+        print("Choisir le/les dé(s) à relancer.")
         print("(Taper 0 lorsque la sélection est terminée)\n")
         des_lances = lancer_des()
         print("\n")
