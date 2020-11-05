@@ -143,12 +143,10 @@ class Score:
         for key in self.upper:
             if self.upper[key] > -1:
                 somme += self.upper[key]
-                print(self.upper[key], somme)
         if somme >= 63:
             print("Your Upper Section points are > 63, you have 35 bonus points.")
             somme += 35
         for key in self.lower:
             if self.lower[key] > -1:
                 somme += self.lower[key]
-                print(self.lower[key], somme)
         return somme
