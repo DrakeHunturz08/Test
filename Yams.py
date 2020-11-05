@@ -4,6 +4,8 @@ import easygui
 
 #Bonjour
 
+#Salut
+
 kept_dices = []
 
 score = Score()
