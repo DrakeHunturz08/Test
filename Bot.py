@@ -53,11 +53,11 @@ def play():
 
 
 	m = np.array(list(itertools.product([False, True], repeat=NUMBER_DICES)))
-	print(m)
+	#print(m)
 
 	# FOR EVERY INPUT
 	for i in range(len(m)):
-		print(m[i,:])
+		print("INPUT i=", i, m[i,:])
 		#dice_copy = dice.copy()
 		score_sum = 0
 		count = 0
@@ -65,55 +65,64 @@ def play():
 		p = (m[i,:] == True).sum()
 		#print(p)
 
+		# ------ FIND EVERY BRANCH POSSIBLE ------
 		combinations = np.array(list(itertools.product(range(1,6+1), repeat= p)))
-		print(combinations)
+		#print("Combinations", combinations)
 
 		kept_dices = []
 		for j in range(len(m[i,:])):
-			print(j, m[i,j])
+			#print(j, m[i,j])
 			if m[i,j] == False :
 				kept_dices.append(dice[j])
+		kept_dices = np.array(kept_dices)
 
-		print(kept_dices)
+		print("Kept Dices", kept_dices)
 
 
-		for line in range(len(combinations)):
-			print(size)
-			if len(kept_dices) > 0:
-				combinations[line] += kept_dices
-			print(line, combinations[line])
+		#print("COMBINATIONS :")
+		combinations_2 = []
+		if len(combinations[0]) > 0 :
+			for line in range(len(combinations)):
+				#print(len(combinations[line]), len(kept_dices))
+				if len(kept_dices) > 0:
+					c = np.concatenate((combinations[line],kept_dices))
+				else:
+					c = combinations[line]
+				#print(c)
+				combinations_2.append(list(c))
+		else :
+			#print(kept_dices)
+			combinations_2.append(list(kept_dices))
 
-		# FOR EVERY DICE
-		"""
-		for d in range(len(m[0])):
 
-			# IF REROLL THIS DICE
-			if m[i,d] == True :
-				
-				# FOR EVERY POSSIBLE DICE OUTCOME
-				for j in range(1,6+1):
-					count += 1
-					dice_copy[d] = j
-					score = calculateScore(dice_copy)
-					print(dice_copy, score)
-					score_sum += score
-		"""
+		# ------ EVALUATE EACH BRANCH AND CHOOSE BEST SCORE BY MEAN ------------
+
+		score_sum = 0
+		count = 0
+		for comb in combinations_2 :
+			count += 1
+			score = calculateScore(comb)
+			#print(comb, score)
+			score_sum += score
 
 		if count == 0 :
 			score_mean = calculateScore(dice)
 		else :
 			score_mean = score_sum/count
+
 		print("Score mean : ", score_mean)
 		if score_mean > max_score :
 			max_score = score_mean
-			#best_choice = d
+			best_choice = i
+
+	# ------ EXECUTE BEST INPUT CHOICE ------------
 
 
 	print("Best choice : ", best_choice)
 
 	if best_choice > -1 :
 		for d in range(len(m[0])):
-			if m[i,d] == True :
+			if m[best_choice,d] == True :
 				rerollDice(d)
 
 
@@ -125,7 +134,7 @@ def play():
 # ------------ MAIN ---------------
 results = []
 
-for i in range(1):
+for i in range(100):
 	result = play()
 	print("Final score :" , result)
 	results.append(result)
@@ -149,4 +158,4 @@ plt.plot(results[:,1], label="max score")
 plt.plot(results[:,2], label="final score")
 
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
-#plt.show()
+plt.show()
