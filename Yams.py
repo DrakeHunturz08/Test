@@ -2,6 +2,8 @@ from random import randint
 from Score import Score
 import easygui
 
+#Bonjour
+
 kept_dices = []
 
 score = Score()
