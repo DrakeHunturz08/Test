@@ -61,4 +61,4 @@ for i in range(13):
         choose_dices(n, rolled_dices)
     score.ask_score(kept_dices)
 total = score.final_score()
-print("Your final score is :", total)
+print("\nYour final score is :", total)
