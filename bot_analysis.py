@@ -78,7 +78,7 @@ def play(msg=False):
 
 		for j in range(3):
 			# Start position
-			result = bot.solve(dice, score, False)
+			result = bot.solve(dice, score, False) # Use bot.solve(dice, score, True) for round details
 			#print("Final score :" , result)
 
 		final_score, final_key = score.chooseMaxScore(dice)
