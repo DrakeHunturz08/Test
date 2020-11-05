@@ -12,9 +12,8 @@ class Bot:
 		dice[i] = randint(1, 6)
 		return dice
 
-	def solve(self, dice, score):
-		initial_score = score.calculateScore(dice)
-		print("Start : ", dice, initial_score)
+	def solve(self, dice, score,  msg=False):
+	
 
 		# First choice (roll 1 of the dices or not)
 		best_choice = -1
@@ -26,7 +25,7 @@ class Bot:
 
 		# --------- FOR EVERY INPUT -----------------
 		for i in range(len(m)):
-			print("INPUT i =", i, m[i,:])
+			if msg==True : print("INPUT i =", i, m[i,:])
 			score_sum = 0
 			count = 0
 
@@ -43,7 +42,7 @@ class Bot:
 					kept_dices.append(dice[j])
 			kept_dices = np.array(kept_dices)
 
-			print("Kept Dices", kept_dices)
+			#print("Kept Dices", kept_dices)
 
 
 			#print("COMBINATIONS :")
@@ -77,7 +76,7 @@ class Bot:
 			else :
 				score_mean = score_sum/count
 
-			print("Score mean : ", score_mean)
+			if msg==True : print("Score mean : ", score_mean)
 			if score_mean > max_score :
 				max_score = score_mean
 				best_choice = i
@@ -85,7 +84,7 @@ class Bot:
 		# ------ EXECUTE BEST INPUT CHOICE ------------
 
 
-		print("Best choice : ", best_choice)
+		if msg==True :print("Best choice : ", best_choice, m[best_choice,:])
 
 		if best_choice > -1 :
 			for d in range(len(m[0])):
@@ -93,7 +92,7 @@ class Bot:
 					self.rerollDice(dice, d)
 
 
-		print(dice)
+		if msg==True : print(dice)
 		final_score = score.calculateScore(dice)
-		return [initial_score, max_score, final_score]
+		return [max_score, final_score]
 
