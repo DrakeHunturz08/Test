@@ -67,12 +67,12 @@ class Bot:
 			count = 0
 			for comb in combinations_2 :
 				count += 1
-				sc = score.calculateScore(comb)
+				sc, key = score.getMaxScore(comb)
 				#print(comb, sc)
 				score_sum += sc
 
 			if count == 0 :
-				score_mean = score.calculateScore(dice)
+				score_mean, key = score.getMaxScore(dice)
 			else :
 				score_mean = score_sum/count
 
@@ -93,6 +93,6 @@ class Bot:
 
 
 		if msg==True : print(dice)
-		final_score = score.calculateScore(dice)
+		final_score, key = score.getMaxScore(dice)
 		return [max_score, final_score]
 

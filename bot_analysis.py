@@ -5,11 +5,12 @@ import statistics
 import itertools
 import matplotlib.pyplot as plt
 import collections
-
+from Score import Score
 
 dice = []
 
 # ----- EASY SCORE CLASS --------
+""""
 class Score:
 	def __init__(self):
 		pass 
@@ -50,7 +51,7 @@ class Score:
 				score_max = score
 
 		return score_max
-
+"""
 
 NUMBER_DICES = 5
 
@@ -58,50 +59,67 @@ def firstRoll():
 	for i in range(NUMBER_DICES):
 		dice.append(randint(1,6))
 
-
-# ------------ MAIN ---------------
-results = []
-
-score = Score()
-
 bot = Bot()
 
-# Number of games
-N = 10
+def play(msg=False):
+	global dice
 
-for i in range(N):
-	dice = []
-	firstRoll()
-	start_dice = dice.copy()
-	initial_score = score.calculateScore(dice)
-	#print("Start : ", dice, initial_score)
+	score = Score()
 
-	for j in range(3):
-		# Start position
-		result = bot.solve(dice, score, False)
-		#print("Final score :" , result)
 
-	print("GAME # ", i, start_dice, initial_score, ">>>", dice, result[1] )
 
-	results.append([initial_score, result[0], result[1]])
+	# Number of Rounds
+	N = 13
 
-#print(results)
+	for i in range(N):
+		dice = []
+		firstRoll()
+		start_dice = dice.copy()
+		initial_score, initial_key = score.getMaxScore(dice)
+		#print("Start : ", dice, initial_score)
+
+		for j in range(3):
+			# Start position
+			result = bot.solve(dice, score, False)
+			#print("Final score :" , result)
+
+		final_score, final_key = score.chooseMaxScore(dice)
+
+		if msg==True : print("ROUND # ", i, start_dice, initial_score, ">>>", dice, final_key, final_score )
+
+		#results.append([initial_score, result[0], result[1]])
+
+	#print(results)
+
+	total_score = score.final_score()
+	
+
+	return total_score
+
+
+# ------------ MAIN ---------------
+
+results = []
+
+# Number of Games
+M = 3
+print("BOT ANALYSIS FOR", M, "GAMES")
+
+for m in range(M):
+
+	total_score = play()
+	results.append(total_score)
+	print("> GAME # ",m,"| FINAL  SCORE : ", total_score)
+
 
 results = np.array(results)
 
 #print(results[:,1])
 print('-------RESULTS----------')
-mean_initial = statistics.mean(results[:,0])
-print("Mean initial", mean_initial)
-mean_max = statistics.mean(results[:,1])
-print("Mean max",mean_max)
-mean_final = statistics.mean(results[:,2])
+mean_final = statistics.mean(results)
 print("Mean final",mean_final)
 
+plt.plot(results, label="final score")
 
-plt.plot(results[:,0], label="initial score")
-plt.plot(results[:,1], label="max mean score")
-plt.plot(results[:,2], label="final score")
-
-plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+#plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
 plt.show()

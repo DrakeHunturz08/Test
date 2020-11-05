@@ -11,7 +11,7 @@ class Score:
             "Threes" : -1,
             "Fours" : -1,
             "Fives" : -1,
-            "Six" : -1,
+            "Sixes" : -1,
         }
         self.lower = {
             "Three of a kind" : -1,
@@ -46,7 +46,7 @@ class Score:
                                 else:
                                     print("Vous êtes idiot")  
 
-                                score = self.calculate(kept_dices, key)
+                                c
                                 if score > -1:
                                     if score == 0:
                                         confirmation = easygui.ynbox("Are you sure to leave the " + key + " and scored 0 point ?")
@@ -92,7 +92,7 @@ class Score:
                 return kept_dices.count(5) * 5 
             else:
                 return 0 
-        elif key == 'Six':   
+        elif key == 'Sixes':   
             if kept_dices.count(6) > 0:
                 return kept_dices.count(6) * 6
             else:
@@ -137,6 +137,29 @@ class Score:
         elif key == 'Chance':
             return sum(kept_dices)
         return -1 
+
+    def getMaxScore(self, dices):
+        score_max = 0
+        key_max = ""
+        for key, value in {**self.upper, **self.lower}.items(): 
+            # If key is not taken yet
+            if value == -1:
+                score = self.calculate(dices, key)
+                if score > score_max :
+                    score_max = score
+                    key_max = key
+
+        return score_max, key_max
+
+    def chooseMaxScore(self, kept_dices):
+        score, key = self.getMaxScore(kept_dices)
+
+        if key in self.upper:
+            self.upper[key] = score
+        elif key in self.lower:
+            self.lower[key] = score
+
+        return score, key
 
     def final_score(self):
         somme = 0
