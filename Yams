@@ -1,94 +1,60 @@
 from random import randint
+from Score import Score
+import easygui
 
-des_gardes = []
+kept_dices = []
 
-def lancer_des():
-    des_lances = []
-    for i in range(5 - len(des_gardes)):
-        des_lances.append(randint(1, 6))
-        print("Valeur du dé " + str(i + 1) + " : ", des_lances[i])
-    return des_lances
+score = Score()
 
-def choisir_des(n, des_lances):
+def roll_dices():
+    rolled_dices = []
+    for i in range(5 - len(kept_dices)):
+        rolled_dices.append(randint(1, 6))
+        print("Value of dice " + str(i + 1) + " : ", rolled_dices[i])
+    return rolled_dices
+
+def choose_dices(n, rolled_dices):
     remove_indices = []
 
     if n == 2 : # Prendre automatiquement les dés restants
-        for i in range(len(des_lances)) :
-            des_gardes.append(des_lances[i])
+        for i in range(len(rolled_dices)) :
+            kept_dices.append(rolled_dices[i])
     else : # Chosir les dés souhaités
         value = -1
         while value != 0:
             try:
-                value = int(input("Taper un chiffre : "))
+                value = int(easygui.enterbox("Choose the dice(s) to re-roll : "))
                 if value == 0:
                     break
-                elif value > len(des_lances) or value < 0:
-                    print("Erreur : Ce dé n'existe pas")
+                elif value > len(rolled_dices) or value < 0:
+                    print("Error : This dice doesn't exist")
                 elif (value - 1) in remove_indices:
-                    print("Erreur : Ce dé est déjà sélectionné")
+                    print("Error : This dice is already chosen")
                 else:
                     remove_indices.append(value - 1)
             except ValueError:
-                print("Erreur : Ce n'est pas un chiffre'.")
-        #des_gardes.append([i for j, i in enumerate(des_lances) if j not in remove_indices])
-        for i in range(len(des_lances)):
+                print("Error : This is not a number")
+            except TypeError:
+                print("You left easygui") 
+                exit()
+        #kept_dices.append([i for j, i in enumerate(rolled_dices) if j not in remove_indices])
+        for i in range(len(rolled_dices)):
             if i not in remove_indices:
-                des_gardes.append(des_lances[i])
-    print("Les dés gardés du joueur sont :", des_gardes, "\n")
+                kept_dices.append(rolled_dices[i])
+    print("Your dices are :", kept_dices, "\n")
 
-def score_final():
-    global des_gardes, score, l
-    
-    while 1:
-        print("Combinaisons possibles :")
-        for i in sorted(l):
-            print(i)
-        try:
-            resultat = int(input("\nTaper un chiffre : "))
-            if resultat == 1:
-                l.remove('Maximum de 1')
-                score = des_gardes.count(1)
-                break
-            elif resultat == 2:
-                l.remove('Maximum de 2')
-                score = des_gardes.count(2) * 2
-                break
-            elif resultat == 3:
-                l.remove('Maximum de 3')
-                score = des_gardes.count(3) * 3
-                break
-            elif resultat == 4:
-                l.remove('Maximum de 4') 
-                score = des_gardes.count(4) * 4
-                break
-            elif resultat == 5:
-                l.remove('Maximum de 5')
-                score = des_gardes.count(5) * 5
-                break
-            elif resultat == 6:
-                l.remove('Maximum de 6')
-                score = des_gardes.count(6) * 6
-                break
-        except ValueError:
-            print("Erreur : Cette combinaison n'existe pas")
-
-    print("Résultat dans le Maximum de " + str(resultat) + " et marque " + str(score) + " points.")
-    del des_gardes[:]
-    
 # Main
 
-print("\n----------[Yams]----------")
+print("\n----------[Yahtzee]----------")
 
-total = 0
-l = ['Maximum de 1', 'Maximum de 2', 'Maximum de 3', 'Maximum de 4', 'Maximum de 5', 'Maximum de 6']
-for i in range(6):
-    print("\nLancer " + str(i + 1) + "\n")
+for i in range(13):
+    print("\nLaunch " + str(i + 1))
+    kept_dices = []
     for n in range(3):
-        print("Choisir le/les dé(s) à relancer.")
-        print("(Taper 0 lorsque la sélection est terminée)\n")
-        des_lances = lancer_des()
+        print("(Type 0 when the selection is done)")
+        rolled_dices = roll_dices()
         print("\n")
-        choisir_des(n, des_lances)
-    score_final()
-    total = total + score
-print("\nLe score total est", total)
+        choose_dices(n, rolled_dices)
+    score.ask_score(kept_dices)
+total = score.final_score()
+print("Your final score is :", total)
