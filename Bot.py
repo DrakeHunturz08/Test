@@ -62,7 +62,7 @@ class Bot:
 				combinations_2.append(list(kept_dices))
 
 
-			# ------ EVALUATE EACH BRANCH AND CHOOSE BEST SCORE BY MEAN ------------
+			# ------ EVALUATE EACH BRANCH AND CHOOSE BEST SCORE BY >>> AVERAGE/MEAN <<< ------------
 
 			score_sum = 0
 			count = 0
