@@ -66,8 +66,6 @@ def play(msg=False):
 
 	score = Score()
 
-
-
 	# Number of Rounds
 	N = 13
 
@@ -85,7 +83,7 @@ def play(msg=False):
 
 		final_score, final_key = score.chooseMaxScore(dice)
 
-		if msg==True : print("ROUND # ", i, start_dice, initial_score, ">>>", dice, final_key, final_score )
+		if msg==True : print("ROUND # ", i, start_dice, ":", initial_score, ">>>", dice, final_key, ":", final_score )
 
 		#results.append([initial_score, result[0], result[1]])
 
@@ -102,14 +100,15 @@ def play(msg=False):
 results = []
 
 # Number of Games
-M = 3
-print("BOT ANALYSIS FOR", M, "GAMES")
+M = 1
+game_duration_expected = 14 # 17s for my laptop
+print("BOT ANALYSIS FOR", M, "GAMES ( time expected to complete :" , (game_duration_expected*M) , "s )")
 
 for m in range(M):
 
-	total_score = play()
+	total_score = play(True) # Use play(True) for game details
 	results.append(total_score)
-	print("> GAME # ",m,"| FINAL  SCORE : ", total_score)
+	print("> GAME # ",m,": FINAL  SCORE : ", total_score)
 
 
 results = np.array(results)
