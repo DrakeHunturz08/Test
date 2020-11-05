@@ -1,67 +1,36 @@
 from random import randint
-import matplotlib.pyplot as plt
 import numpy as np
 import statistics
 import itertools
-
-dice = []
-
-def calculateScore(dice):
-	score_max = 0
-
-	# Calculates SUMS
-	for x in range(1,6+1):
-		score = dice.count(x) * x
-		if score > score_max :
-			score_max = score
-
-
-	# LARGE STRAIGHT
-	if (max(dice) - min(dice) + 1) == 4 and len(dice) == 5 :
-		score = 40
-		if score > score_max :
-			score_max = score
-
-	return score_max
-
-
-NUMBER_DICES = 5
-
-def firstRoll():
-	for i in range(NUMBER_DICES):
-		dice.append(randint(1,6))
-
-def rerollDice(i):
-	dice[i] = randint(1, 6)
-
-# -------------- BOT CLASS -------------------------------
 
 
 class Bot:
 	def __init__(self):
 		pass
 
-	def solve(self, dice):
-		initial_score = calculateScore(dice)
+	def rerollDice(self, dice, i):
+		dice[i] = randint(1, 6)
+		return dice
+
+	def solve(self, dice, score):
+		initial_score = score.calculateScore(dice)
 		print("Start : ", dice, initial_score)
 
 		# First choice (roll 1 of the dices or not)
 		best_choice = -1
 		max_score = 0
 
-
-		m = np.array(list(itertools.product([False, True], repeat=NUMBER_DICES)))
+		# ----- GET MATRIX OF POSSIBLE MOVES (2^5) -------
+		m = np.array(list(itertools.product([False, True], repeat=len(dice))))
 		#print(m)
 
-		# FOR EVERY INPUT
+		# --------- FOR EVERY INPUT -----------------
 		for i in range(len(m)):
-			print("INPUT i=", i, m[i,:])
-			#dice_copy = dice.copy()
+			print("INPUT i =", i, m[i,:])
 			score_sum = 0
 			count = 0
 
 			p = (m[i,:] == True).sum()
-			#print(p)
 
 			# ------ FIND EVERY BRANCH POSSIBLE ------
 			combinations = np.array(list(itertools.product(range(1,6+1), repeat= p)))
@@ -99,12 +68,12 @@ class Bot:
 			count = 0
 			for comb in combinations_2 :
 				count += 1
-				score = calculateScore(comb)
-				#print(comb, score)
-				score_sum += score
+				sc = score.calculateScore(comb)
+				#print(comb, sc)
+				score_sum += sc
 
 			if count == 0 :
-				score_mean = calculateScore(dice)
+				score_mean = score.calculateScore(dice)
 			else :
 				score_mean = score_sum/count
 
@@ -121,46 +90,10 @@ class Bot:
 		if best_choice > -1 :
 			for d in range(len(m[0])):
 				if m[best_choice,d] == True :
-					rerollDice(d)
+					self.rerollDice(dice, d)
 
 
 		print(dice)
-		final_score = calculateScore(dice)
+		final_score = score.calculateScore(dice)
 		return [initial_score, max_score, final_score]
 
-
-# ------------ MAIN ---------------
-results = []
-
-bot = Bot()
-
-for i in range(10):
-	dice = []
-
-	# Start position
-
-	firstRoll()
-	result = bot.solve(dice)
-	print("Final score :" , result)
-	results.append(result)
-
-#print(results)
-
-results = np.array(results)
-
-#print(results[:,1])
-print('-------RESULTS----------')
-mean_initial = statistics.mean(results[:,0])
-print("Mean initial", mean_initial)
-mean_max = statistics.mean(results[:,1])
-print("Mean max",mean_max)
-mean_final = statistics.mean(results[:,2])
-print("Mean final",mean_final)
-
-
-plt.plot(results[:,0], label="initial score")
-plt.plot(results[:,1], label="max score")
-plt.plot(results[:,2], label="final score")
-
-plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
-plt.show()
