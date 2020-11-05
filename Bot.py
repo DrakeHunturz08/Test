@@ -25,7 +25,7 @@ def calculateScore(dice):
 	return score_max
 
 
-NUMBER_DICES = 2
+NUMBER_DICES = 3
 
 def firstRoll():
 	for i in range(NUMBER_DICES):
@@ -144,7 +144,7 @@ for i in range(100):
 results = np.array(results)
 
 #print(results[:,1])
-
+print('-------RESULTS----------')
 mean_initial = statistics.mean(results[:,0])
 print("Mean initial", mean_initial)
 mean_max = statistics.mean(results[:,1])
