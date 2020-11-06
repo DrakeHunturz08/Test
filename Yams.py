@@ -8,7 +8,9 @@ import easygui
 
 kept_dices = []
 
+
 score = Score()
+
 
 def roll_dices():
     rolled_dices = []
@@ -23,7 +25,7 @@ def choose_dices(n, rolled_dices):
     if n == 2 : # Prendre automatiquement les dés restants
         for i in range(len(rolled_dices)) :
             kept_dices.append(rolled_dices[i])
-    else : # Chosir les dés souhaités
+    else : # Choisir les dés souhaités
         value = -1
         while value != 0:
             try:

@@ -76,7 +76,7 @@ def play(msg=False):
 		initial_score, initial_key = score.getMaxScore(dice)
 		#print("Start : ", dice, initial_score)
 
-		for j in range(3):
+		for j in range(2):
 			# Start position
 			result = bot.solve(dice, score, False) # Use bot.solve(dice, score, True) for round details
 			#print("Final score :" , result)
@@ -100,7 +100,7 @@ def play(msg=False):
 results = []
 
 # Number of Games
-M = 1
+M = 10
 game_duration_expected = 14 # 17s for my laptop
 print("BOT ANALYSIS FOR", M, "GAMES ( time expected to complete :" , (game_duration_expected*M) , "s )")
 
