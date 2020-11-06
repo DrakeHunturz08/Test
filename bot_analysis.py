@@ -9,49 +9,6 @@ from Score import Score
 
 dice = []
 
-# ----- EASY SCORE CLASS --------
-""""
-class Score:
-	def __init__(self):
-		pass 
-
-	def calculateScore(self, dice):
-		score_max = 0
-		counter = (collections.Counter(dice))
-
-		# Calculates SUMS
-		for x in range(1,6+1):
-			score = dice.count(x) * x
-			if score > score_max :
-				score_max = score
-
-		# THREE OF A KIND
-		if dice.count(1) == 3 or dice.count(2) == 3 or dice.count(3) == 3 or dice.count(4) == 3 or dice.count(5) == 3 or dice.count(6) == 3:
-			score = sum(dice)
-			if score > score_max :
-				score_max = score
-
-		# FOUR OF A KIND
-		if dice.count(1) == 4 or dice.count(2) == 4 or dice.count(3) == 4 or dice.count(4) == 4 or dice.count(5) == 4 or dice.count(6) == 4:
-			score = sum(dice)
-			if score > score_max :
-				score_max = score
-
-		# FULL HOUSE
-		if len(counter) == 2 and (counter[list(counter.keys())[0]] == 2 or counter[list(counter.keys())[0]] == 3):
-			score = 25
-			if score > score_max :
-					score_max = score
-
-
-		# LARGE STRAIGHT
-		if len(counter) == 5 and (max(dice) - min(dice)) == 4:
-			score = 40
-			if score > score_max :
-				score_max = score
-
-		return score_max
-"""
 
 NUMBER_DICES = 5
 
@@ -78,7 +35,7 @@ def play(msg=False):
 
 		for j in range(2):
 			# Start position
-			result = bot.solve(dice, score, False) # Use bot.solve(dice, score, True) for round details
+			result = bot.solve(dice, score, True) # Use bot.solve(dice, score, True) for round details
 			#print("Final score :" , result)
 
 		final_score, final_key = score.chooseMaxScore(dice)
@@ -100,7 +57,7 @@ def play(msg=False):
 results = []
 
 # Number of Games
-M = 10
+M = 1
 game_duration_expected = 14 # 17s for my laptop
 print("BOT ANALYSIS FOR", M, "GAMES ( time expected to complete :" , (game_duration_expected*M) , "s )")
 
